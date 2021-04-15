@@ -6,8 +6,6 @@ addBtn.addEventListener("click", (e) => {
   const messageCheckbox = document.getElementById("messageCheckbox");
 
   let tasks = localStorage.getItem("tasks");
-  let i = 0;
-  let j = 0;
   if (messageCheckbox.checked) {
     if (tasks == null) {
       taskObj = [];
@@ -15,12 +13,10 @@ addBtn.addEventListener("click", (e) => {
       taskObj = JSON.parse(tasks);
     }
 
-    let nCount = i +1;
     let myObj = {
       title: addTitle.value,
       text: addTxt.value,
       impStatus: true,
-      count: nCount,
     };
 
     taskObj.push(myObj);
@@ -35,12 +31,10 @@ addBtn.addEventListener("click", (e) => {
     } else {
       taskObj = JSON.parse(tasks);
     }
-    let mCount = j +1;
     let myObj = {
       title: addTitle.value,
       text: addTxt.value,
       impStatus: false,
-      count: mCount,
     };
 
     taskObj.push(myObj);
@@ -63,51 +57,27 @@ function showTasks() {
   taskObj.forEach(function (element, index) {
     if (element.impStatus == false) {
       tskHtml += `
-      <div id="${
-        index + 1
-      }" class="taskCard my-2 mx-2 card" style="width: 18rem;">
+      <div id="${index}" class="taskCard my-2 mx-2 card" style="width: 18rem;">
       <div class="card-body">
-      <h5 id="${index + 11}" class="card-title">Note ${index + 1}: ${
-        element.title
-      }</h5>
-      <p id="${index + 13}" class="card-text"> ${element.text}</p>
-      <button id="${
-        index + 3
-      }" onclick="editTask(this.id)" class="btn btn-primary">Edit</button>
-      <button id="${
-        index + 5
-      }" onclick="doneTask(this.id)"  class="btn btn-success">Done</button>
-      <button id="${
-        index + 7
-      }" onclick="undoTask(this.id)"  class="btn btn-success" style="display:none;">Undo</button>
-      <button id="${
-        index + 9
-      }" onclick="deleteTask(this.id)" class="btn btn-danger">Delete</button>
+      <h5 id="${index + 1}" class="card-title">Note ${index + 1}: ${element.title}</h5>
+      <p id="${index + 2}" class="card-text"> ${element.text}</p>
+      <button id="${index + 3}" onclick="editTask(this.id)" class="btn btn-primary">Edit</button>
+      <button id="${index + 4}" onclick="doneTask(this.id)"  class="btn btn-success">Done</button>
+      <button id="${index + 5}" onclick="undoTask(this.id)"  class="btn btn-success" style="display:none;">Undo</button>
+      <button id="${index + 6}" onclick="deleteTask(this.id)" class="btn btn-danger">Delete</button>
       </div>
       </div>`;
     } 
     else {      
       impTskHtml += `
-      <div id="${
-        index + 1
-      }" class="taskCard my-2 mx-2 card" style="width: 18rem; background-color: #ff8a8a;">
+      <div id="${index}" class="taskCard my-2 mx-2 card" style="width: 18rem; background-color: #f0b7a4;">
       <div class="card-body">
-      <h5 id="${index + 11}" class="card-title">Note ${index + 1}: ${
-        element.title
-      }</h5>
-              <p id="${index + 13}" class="card-text"> ${element.text}</p>
-              <button id="${
-                index + 3
-              }" onclick="editTask(this.id)" class="btn btn-primary">Edit</button>
-              <button id="${
-                index + 5
-              }" onclick="doneTask(this.id)"  class="btn btn-success">Done</button>
-              <button id="${
-                index + 7
-              }" onclick="undoTask(this.id)"  class="btn btn-success" style="display:none;">Undo</button>
-              <button id="${
-                index + 9
-              }" onclick="deleteTask(this.id)" class="btn btn-danger">Delete</button>
+      <h5 id="${index + 1}" class="card-title" style="color: #41484b;">Note ${index + 1}: ${element.title}</h5>
+              <p id="${index + 2}" class="card-text"> ${element.text}</p>
+              <button id="${index + 3}" onclick="editTask(this.id)" class="btn btn-primary">Edit</button>
+              <button id="${index + 4}" onclick="doneTask(this.id)"  class="btn btn-success">Done</button>
+              <button id="${index + 5}" onclick="undoTask(this.id)"  class="btn btn-success" style="display:none;">Undo</button>
+              <button id="${index + 6}" onclick="deleteTask(this.id)" class="btn btn-danger">Delete</button>
               </div>
               </div>`;
     }
@@ -147,5 +117,16 @@ function doneTask(arg) {
 }
 
 function deleteTask(params) {
-  console.log(`hello, im deleting ${params}`);
+  // console.log(`hello, im deleting ${params}`);
+  let intParams = parseInt(params);
+  let index = intParams-6;
+  let tasks = localStorage.getItem("tasks");
+  if (tasks == null) {
+    taskObj = [];
+  } else {
+    taskObj = JSON.parse(tasks);
+  }    
+  taskObj.splice(index, 1);
+  localStorage.setItem("tasks", JSON.stringify(taskObj));
+  showTasks();
 }
