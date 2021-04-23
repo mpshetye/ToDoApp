@@ -134,6 +134,20 @@ function taskFunc(params) {
 //EDIT TASK
 function editTask(params) {
   console.log(`hello, im editing ${params}`);
+  let editInt = parseInt(params);
+  let divEditIndex = editInt - 7;
+  editFunc(divEditIndex);
+}
+
+function editDoneTask(params) {
+  console.log(`hello, im editing ${params}`);
+  let editDoneInt = parseInt(params);
+  let divDoneEditIndex = editDoneInt - 8;
+  editFunc(divDoneEditIndex);
+}
+
+function editFunc(params) {
+  document.getElementById(params).contentEditable = true;
 }
 
 
@@ -154,6 +168,7 @@ function undoTask(params) {
   }
 
   let undoTask = doneTaskObj.splice(doneDivIndex, 1)[0];
+  localStorage.setItem("doneTasks", JSON.stringify(doneTaskObj));
   console.log(undoTask);
 
   let pushIndex = undoTask.index;
@@ -170,7 +185,6 @@ function undoTask(params) {
   }
 
   taskObj.splice(pushIndex, 0 , undoTask);
-  localStorage.setItem("doneTasks", JSON.stringify(doneTaskObj));
   localStorage.setItem("tasks", JSON.stringify(taskObj));
   showTasks();
   showDone();
@@ -238,7 +252,7 @@ function showDone() {
     <div class="card-body">
     <h5 id="${index + 4}" class="card-title doneClass">Note ${element.count + 1}: ${element.title}</h5>
     <p id="${index + 6}" class="card-text doneClass"> ${element.text}</p>
-    <button id="${index + 8}" onclick="editTask(this.id)" class="btn btn-primary">Edit</button>
+    <button id="${index + 8}" onclick="editDoneTask(this.id)" class="btn btn-primary">Edit</button>
     <button id="${index + 10}" onclick="undoTask(this.id)"  class="btn btn-success">Undo</button>
     <button id="${index + 12}" onclick="deleteDoneTask(this.id)" class="btn btn-danger">Delete</button>
     </div>
@@ -291,3 +305,31 @@ function deleteDoneTask(params) {
   showDone();
   showTasks();
 }
+
+
+//SEARCH TASK
+let search = document.getElementById('searchTask');
+search.addEventListener("input", function(){
+
+    let inputVal = search.value.toLowerCase();
+    // console.log('Input event fired!', inputVal);
+    let taskCard = document.getElementsByClassName('taskCard');
+    // console.log(Array.from(taskCard));
+    // console.log(taskCard);
+    Array.from(taskCard).forEach((elem)=>{
+        // console.log(elem.getElementsByTagName("h5"))
+        // console.log(elem.getElementsByTagName("h5")[0])
+    
+        let cardTitle = elem.getElementsByTagName("h5")[0].innerText.toLowerCase();
+        let cardTxt = elem.getElementsByTagName("p")[0].innerText.toLowerCase();
+        if(cardTxt.includes(inputVal)){
+            elem.style.display = "block";
+        }
+        else if(cardTitle.includes(inputVal)){
+            elem.style.display = "block";
+        }
+        else{
+            elem.style.display = "none";
+        }
+    })
+})
