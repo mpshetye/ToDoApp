@@ -134,8 +134,24 @@ function taskFunc(params) {
 //EDIT TASK
 function editTask(params) {
   console.log(`hello, im editing ${params}`);
-  let editInt = parseInt(params);
-  let divEditIndex = editInt - 6;
+  let divEditElem = document.getElementById(params).parentElement;
+  let divEditIndex = divEditElem.getAttribute('id');
+  let taskTitle = divEditElem.getElementsByTagName("h5")[0];
+  let originalTitle = divEditElem.getElementsByTagName("h5")[0].innerText;
+  let taskContent = divEditElem.getElementsByTagName("p")[0];
+  let originalContent = divEditElem.getElementsByTagName("p")[0].innerText;
+  
+  taskTitle.contentEditable = true;
+  taskContent.contentEditable = true;
+  if ((taskTitle.contentEditable == "true") && (taskTitle.contentEditable == "true")) {
+    taskTitle.contentEditable = "false";
+    taskContent.contentEditable = "false";
+    button.innerHTML = "Enable content of p to be editable!";
+  } else {
+    taskTitle.contentEditable = "true";
+    taskContent.contentEditable = "true";
+    button.innerHTML = "Disable content of p to be editable!";
+  }
   
   // let original
   // let originalContent = 
@@ -154,7 +170,6 @@ function editTask(params) {
 // }
 
 // function editFunc(params) {
-//   document.getElementById(params).contentEditable = true;
 // }
 
 
