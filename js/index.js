@@ -86,7 +86,7 @@ function showTasks() {
       <h5 id="${index + 3}" class="card-title">Note ${element.count + 1}: ${element.title}</h5>
       <p id="${index+ 5}" class="card-text"> ${element.text}</p>
       <button id="${index + 7}" onclick="editTask(this.id)" class="btn btn-primary">Edit</button>
-      <button id="${index + 9}" onclick="doneTask(this.id)"  class="btn btn-success">Done</button>
+      <button id="done${index + 9}" onclick="doneTask(this.id)"  class="btn btn-success">Done</button>
       <button id="${index + 11}" onclick="deleteTask(this.id)" class="btn btn-danger">Delete</button>
       </div>
       </div>`;
@@ -98,7 +98,7 @@ function showTasks() {
       <h5 id="${index + 3}" class="card-title" style="color: #41484b;">Note ${element.count + 1}: ${element.title}</h5>
               <p id="${index + 5}" class="card-text"> ${element.text}</p>
               <button id="${index + 7}" onclick="editTask(this.id)" class="btn btn-primary">Edit</button>
-              <button id="${index + 9}" onclick="doneTask(this.id)"  class="btn btn-success">Done</button>        
+              <button id="done${index + 9}" onclick="doneTask(this.id)"  class="btn btn-success">Done</button>        
               <button id="${index + 11}" onclick="deleteTask(this.id)" class="btn btn-danger">Delete</button>
               </div>
               </div>`;
@@ -135,29 +135,39 @@ function taskFunc(params) {
 function editTask(params) {
   console.log(`hello, im editing ${params}`);
   let editInt = parseInt(params);
-  let divEditIndex = editInt - 7;
-  editFunc(divEditIndex);
+  let divEditIndex = editInt - 6;
+  
+  // let original
+  // let originalContent = 
+  // console.log(`${divEditIndex}`);
+  
+
+
+  // editFunc(divEditIndex);
 }
 
-function editDoneTask(params) {
-  console.log(`hello, im editing ${params}`);
-  let editDoneInt = parseInt(params);
-  let divDoneEditIndex = editDoneInt - 8;
-  editFunc(divDoneEditIndex);
-}
+// function editDoneTask(params) {
+//   console.log(`hello, im editing ${params}`);
+//   let editDoneInt = parseInt(params);
+//   let divDoneEditIndex = editDoneInt - 8;
+//   editFunc(divDoneEditIndex);
+// }
 
-function editFunc(params) {
-  document.getElementById(params).contentEditable = true;
-}
+// function editFunc(params) {
+//   document.getElementById(params).contentEditable = true;
+// }
 
 
 //UNDO TASK
 function undoTask(params) {
-  console.log(`hello, im undoing ${params}`);
-  let paramsInt = parseInt(params);
-  let doneDivIndex = paramsInt - 10;
+  let divUndoTaskElem = document.getElementById(params).parentElement.parentElement
+  console.log(divUndoTaskElem);
+  let divUndoTempIndex = divUndoTaskElem.getAttribute('id');
+  let divUndoTempIndexInt = parseInt(divUndoTempIndex);
+  let divUndoIndex = divUndoTempIndexInt - 2;
+
   let doneTasks = localStorage.getItem("doneTasks");
-  // console.log(typeof doneTasks);
+  console.log(typeof doneTasks);
     
   if (doneTasks == null) 
   {
@@ -166,8 +176,7 @@ function undoTask(params) {
   else {
     doneTaskObj = JSON.parse(doneTasks);   
   }
-
-  let undoTask = doneTaskObj.splice(doneDivIndex, 1)[0];
+  let undoTask = doneTaskObj.splice(divUndoIndex, 1)[0];
   localStorage.setItem("doneTasks", JSON.stringify(doneTaskObj));
   console.log(undoTask);
 
@@ -193,11 +202,14 @@ function undoTask(params) {
 
 //DONE TASK
 function doneTask(arg) {
-  let argInt = parseInt(arg);
-  console.log(`${argInt}`);
-  
-  let divIndex = argInt - 9;
+  console.log(typeof arg);
+  let divTaskElem = document.getElementById(arg).parentElement.parentElement
+  console.log(divTaskElem);
+  let divTaskIndex = divTaskElem.getAttribute('id');
+  console.log(`${divTaskIndex}`);
+  let divIndex = divTaskIndex - 1;
   console.log(`${divIndex}`);
+  
   
   let tasks = localStorage.getItem("tasks");
   if (tasks == null)
@@ -252,8 +264,8 @@ function showDone() {
     <div class="card-body">
     <h5 id="${index + 4}" class="card-title doneClass">Note ${element.count + 1}: ${element.title}</h5>
     <p id="${index + 6}" class="card-text doneClass"> ${element.text}</p>
-    <button id="${index + 8}" onclick="editDoneTask(this.id)" class="btn btn-primary">Edit</button>
-    <button id="${index + 10}" onclick="undoTask(this.id)"  class="btn btn-success">Undo</button>
+    <button id="${index + 8}" onclick="editTask(this.id)" class="btn btn-primary">Edit</button>
+    <button id="undo${index + 10}" onclick="undoTask(this.id)"  class="btn btn-success">Undo</button>
     <button id="${index + 12}" onclick="deleteDoneTask(this.id)" class="btn btn-danger">Delete</button>
     </div>
     </div>`;
