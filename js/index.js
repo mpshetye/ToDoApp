@@ -83,11 +83,11 @@ function showTasks() {
       tskHtml += `
       <div id="${index + 1}" class="taskCard my-2 mx-2 card" style="width: 18rem;">
       <div class="card-body">
-      <h5 id="${index + 3}" class="card-title">Note ${element.count + 1}: ${element.title}</h5>
-      <p id="${index+ 5}" class="card-text"> ${element.text}</p>
-      <button id="${index + 7}" onclick="editTask(this.id)" class="btn btn-primary">Edit</button>
+      <h5 id="title${index + 3}" class="card-title">Note ${element.count + 1}: ${element.title}</h5>
+      <p id="content${index+ 5}" class="card-text"> ${element.text}</p>
+      <button id="edit${index + 7}" onclick="editTask(this.id)" class="btn btn-primary">Edit</button>
       <button id="done${index + 9}" onclick="doneTask(this.id)"  class="btn btn-success">Done</button>
-      <button id="${index + 11}" onclick="deleteTask(this.id)" class="btn btn-danger">Delete</button>
+      <button id="delete${index + 11}" onclick="deleteTask(this.id)" class="btn btn-danger">Delete</button>
       </div>
       </div>`;
     } 
@@ -262,11 +262,11 @@ function showDone() {
     dtkHtml += `
     <div id="${index + 2}" class="taskCard my-2 mx-2 card" style="width: 18rem;">
     <div class="card-body">
-    <h5 id="${index + 4}" class="card-title doneClass">Note ${element.count + 1}: ${element.title}</h5>
-    <p id="${index + 6}" class="card-text doneClass"> ${element.text}</p>
-    <button id="${index + 8}" onclick="editTask(this.id)" class="btn btn-primary">Edit</button>
+    <h5 id="doneTitle${index + 4}" class="card-title doneClass">Note ${element.count + 1}: ${element.title}</h5>
+    <p id="doneContent${index + 6}" class="card-text doneClass"> ${element.text}</p>
+    <button id="doneEdit${index + 8}" onclick="editTask(this.id)" class="btn btn-primary">Edit</button>
     <button id="undo${index + 10}" onclick="undoTask(this.id)"  class="btn btn-success">Undo</button>
-    <button id="${index + 12}" onclick="deleteDoneTask(this.id)" class="btn btn-danger">Delete</button>
+    <button id="doneDelete${index + 12}" onclick="deleteDoneTask(this.id)" class="btn btn-danger">Delete</button>
     </div>
     </div>`;
     doneTaskFunc(dtkHtml);
