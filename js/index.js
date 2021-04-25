@@ -95,11 +95,11 @@ function showTasks() {
       impTskHtml += `
       <div id="${index + 1}" class="taskCard my-2 mx-2 card" style="width: 18rem; background-color: #f0b7a4;">
       <div class="card-body">
-      <h5 id="${index + 3}" class="card-title" style="color: #41484b;">Note ${element.count + 1}: ${element.title}</h5>
-              <p id="${index + 5}" class="card-text"> ${element.text}</p>
-              <button id="${index + 7}" onclick="editTask(this.id)" class="btn btn-primary">Edit</button>
+      <h5 id="title${index + 3}" class="card-title" style="color: #41484b;">Note ${element.count + 1}: ${element.title}</h5>
+              <p id="content${index + 5}" class="card-text"> ${element.text}</p>
+              <button id="edit${index + 7}" onclick="editTask(this.id)" class="btn btn-primary">Edit</button>
               <button id="done${index + 9}" onclick="doneTask(this.id)"  class="btn btn-success">Done</button>        
-              <button id="${index + 11}" onclick="deleteTask(this.id)" class="btn btn-danger">Delete</button>
+              <button id="delete${index + 11}" onclick="deleteTask(this.id)" class="btn btn-danger">Delete</button>
               </div>
               </div>`;
     }
@@ -288,23 +288,31 @@ function doneTaskFunc(params) {
 
 //DELETE TASK
 function deleteTask(params) {
-  let intParams = parseInt(params);
-  let index = intParams-11;
+  // let intParams = parseInt(params);
+  // let index = intParams-11;
+  let divDeleteTaskElem = document.getElementById(params).parentElement.parentElement;
+  let divDeleteIndex = parseInt(divDeleteTaskElem.getAttribute('id'));
+  deleteIndex = divDeleteIndex - 1;
+
   let tasks = localStorage.getItem("tasks");
   if (tasks == null) {
     taskObj = [];
   } else {
     taskObj = JSON.parse(tasks);
-  }    
-  taskObj.splice(index, 1);
+  }
+
+  taskObj.splice(deleteIndex, 1);
   localStorage.setItem("tasks", JSON.stringify(taskObj));
   showDone();
   showTasks();
 }
 
 function deleteDoneTask(params) {
-  let intParams = parseInt(params);
-  let index = intParams-12;
+  // let intParams = parseInt(params);
+  // let index = intParams-12;
+  let divDeleteDoneTaskElem = document.getElementById(params).parentElement.parentElement;
+  let divDeleteDoneIndex = parseInt(divDeleteDoneTaskElem.getAttribute('id'));
+  deleteDoneIndex = divDeleteDoneIndex - 2;
   let doneTasks = localStorage.getItem("doneTasks");
   if (doneTasks == null) {
     doneTaskObj = [];
@@ -312,7 +320,7 @@ function deleteDoneTask(params) {
   else {
     doneTaskObj = JSON.parse(doneTasks);
   }    
-  doneTaskObj.splice(index, 1);
+  doneTaskObj.splice(deleteDoneIndex, 1);
   localStorage.setItem("doneTasks", JSON.stringify(doneTaskObj));
   showDone();
   showTasks();
