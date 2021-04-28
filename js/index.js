@@ -140,37 +140,69 @@ function editTask(params) {
   let originalTitle = divEditElem.getElementsByTagName("h5")[0].innerText;
   let taskContent = divEditElem.getElementsByTagName("p")[0];
   let originalContent = divEditElem.getElementsByTagName("p")[0].innerText;
+  let buttons = divEditElem.getElementsByTagName("button");
+  // let buttons = divEditElem.children;
+  console.log(buttons);
+  let editBtn = divEditElem.getElementsByTagName("button")[0];
+  // let undoEditBtn = divEditElem.getElementsByTagName("button")[1];
+  // let saveEditBtn = divEditElem.getElementsByTagName("button")[2];
+  let doneBtn = divEditElem.getElementsByTagName("button")[1];
+  let deleteBtn = divEditElem.getElementsByTagName("button")[2];
   
-  taskTitle.contentEditable = true;
-  taskContent.contentEditable = true;
-  if ((taskTitle.contentEditable == "true") && (taskTitle.contentEditable == "true")) {
-    taskTitle.contentEditable = "false";
-    taskContent.contentEditable = "false";
-    button.innerHTML = "Enable content of p to be editable!";
-  } else {
-    taskTitle.contentEditable = "true";
-    taskContent.contentEditable = "true";
-    button.innerHTML = "Disable content of p to be editable!";
+  let undoEditBtn = document.createElement("button");
+  undoEditBtn.id = 'undoEditTask';
+  undoEditBtn.classList = 'btn btn-success';
+  undoEditBtn.innerText = 'Undo';
+  undoEditBtn.onclick = function(){
+    console.log(`hello, im undo edit button`);    
+    console.log(originalTitle);    
+    console.log(originalContent);
+    let currentTitle = divEditElem.getElementsByTagName("h5")[0].innerText;
+    let currentContent = divEditElem.getElementsByTagName("p")[0].innerText;
+    console.log(currentTitle);
+    console.log(currentContent);
+    if(originalTitle != currentTitle){
+      taskTitle.innerText = originalTitle;
+    }
+    
+    else if(originalContent != currentContent){
+      taskContent.innerText = originalContent;
+    }
+    
   }
   
-  // let original
-  // let originalContent = 
-  // console.log(`${divEditIndex}`);
   
+  let saveEditBtn = document.createElement("button");
+  saveEditBtn.id = 'saveEditTask';
+  saveEditBtn.classList = 'btn btn-info';
+  saveEditBtn.innerText = 'Save';
+  saveEditBtn.style.cssText = 'margin-left: .5rem;';
+  saveEditBtn.onclick = function(){
+    console.log(`hello, im save edit button`);
+    taskTitle.contentEditable = false;
+    taskContent.contentEditable = false;
+    let buttonsm = divEditElem.getElementsByTagName("button");
+    console.log(buttonsm);
+    divEditElem.removeChild(document.getElementById('undoEditTask'));
+    divEditElem.removeChild(document.getElementById('saveEditTask'));
+    editBtn.style.display = "inline-block";
+    doneBtn.style.display = "inline-block";
+    deleteBtn.style.display = "inline-block";
+    
+  }
 
-
-  // editFunc(divEditIndex);
+  taskTitle.contentEditable = false;
+  taskContent.contentEditable = false;
+  if ((taskTitle.contentEditable == "false") && (taskTitle.contentEditable == "false")) {
+    taskTitle.contentEditable = true;
+    taskContent.contentEditable = true;
+    editBtn.style.display = "none";
+    doneBtn.style.display = "none";
+    deleteBtn.style.display = "none";
+    taskContent.after(undoEditBtn);
+    undoEditBtn.after(saveEditBtn);
+  }
 }
-
-// function editDoneTask(params) {
-//   console.log(`hello, im editing ${params}`);
-//   let editDoneInt = parseInt(params);
-//   let divDoneEditIndex = editDoneInt - 8;
-//   editFunc(divDoneEditIndex);
-// }
-
-// function editFunc(params) {
-// }
 
 
 //UNDO TASK
@@ -349,11 +381,11 @@ search.addEventListener("input", function(){
     let inputVal = search.value.toLowerCase();
     // console.log('Input event fired!', inputVal);
     let taskCard = document.getElementsByClassName('taskCard');
-    // console.log(Array.from(taskCard));
-    // console.log(taskCard);
+    console.log(Array.from(taskCard));
+    console.log(taskCard);
     Array.from(taskCard).forEach((elem)=>{
-        // console.log(elem.getElementsByTagName("h5"))
-        // console.log(elem.getElementsByTagName("h5")[0])
+        console.log(elem.getElementsByTagName("h5"))
+        console.log(elem.getElementsByTagName("h5")[0])
     
         let cardTitle = elem.getElementsByTagName("h5")[0].innerText.toLowerCase();
         let cardTxt = elem.getElementsByTagName("p")[0].innerText.toLowerCase();
