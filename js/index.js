@@ -78,12 +78,12 @@ function showTasks() {
   }
   impTskHtml = "";
   tskHtml = "";
-  taskObj.forEach(function (element, index) {
+  taskObj.forEach((element, index)=> {
     if (element.impStatus == false) {
       tskHtml += `
-      <div id="${index + 1}" class="taskCard my-2 mx-2 card" style="width: 18rem;">
+      <div id="${index + 1}" class="taskCard tasks my-2 mx-2 card" style="width: 18rem;">
       <div class="card-body">
-      <h5 id="title${index + 3}" class="card-title">Note ${element.count + 1}: ${element.title}</h5>
+      <h5 id="title${index + 3}" class="card-title">Note ${element.count + 1}: <span>${element.title}</span></h5>
       <p id="content${index+ 5}" class="card-text"> ${element.text}</p>
       <button id="edit${index + 7}" onclick="editTask(this.id)" class="btn btn-primary">Edit</button>
       <button id="done${index + 9}" onclick="doneTask(this.id)"  class="btn btn-success">Done</button>
@@ -93,9 +93,9 @@ function showTasks() {
     } 
     else {      
       impTskHtml += `
-      <div id="${index + 1}" class="taskCard my-2 mx-2 card" style="width: 18rem; background-color: #f0b7a4;">
+      <div id="${index + 1}" class="taskCard tasks my-2 mx-2 card" style="width: 18rem; background-color: #f0b7a4;">
       <div class="card-body">
-      <h5 id="title${index + 3}" class="card-title" style="color: #41484b;">Note ${element.count + 1}: ${element.title}</h5>
+      <h5 id="title${index + 3}" class="card-title" style="color: #41484b;">Note ${element.count + 1}: <span>${element.title}</span></h5>
               <p id="content${index + 5}" class="card-text"> ${element.text}</p>
               <button id="edit${index + 7}" onclick="editTask(this.id)" class="btn btn-primary">Edit</button>
               <button id="done${index + 9}" onclick="doneTask(this.id)"  class="btn btn-success">Done</button>        
@@ -134,10 +134,14 @@ function taskFunc(params) {
 //EDIT TASK
 function editTask(params) {
   console.log(`hello, im editing ${params}`);
+  let divEditParentElem = document.getElementById(params).parentElement.parentElement;
+  let divEditParentIndex = parseInt(divEditParentElem.getAttribute('id'));
+  // console.log(typeof divEditParentIndex);
   let divEditElem = document.getElementById(params).parentElement;
   let divEditIndex = divEditElem.getAttribute('id');
-  let taskTitle = divEditElem.getElementsByTagName("h5")[0];
-  let originalTitle = divEditElem.getElementsByTagName("h5")[0].innerText;
+  let taskHeader = divEditElem.getElementsByTagName("h5")[0];
+  let taskTitle = taskHeader.children[0];
+  let originalTitle = taskHeader.children[0].innerText;
   let taskContent = divEditElem.getElementsByTagName("p")[0];
   let originalContent = divEditElem.getElementsByTagName("p")[0].innerText;
   let buttons = divEditElem.getElementsByTagName("button");
@@ -157,7 +161,7 @@ function editTask(params) {
     console.log(`hello, im undo edit button`);    
     console.log(originalTitle);    
     console.log(originalContent);
-    let currentTitle = divEditElem.getElementsByTagName("h5")[0].innerText;
+    let currentTitle = divEditElem.getElementsByTagName("h5")[0].children[0].innerText;
     let currentContent = divEditElem.getElementsByTagName("p")[0].innerText;
     console.log(currentTitle);
     console.log(currentContent);
@@ -181,13 +185,48 @@ function editTask(params) {
     console.log(`hello, im save edit button`);
     taskTitle.contentEditable = false;
     taskContent.contentEditable = false;
-    let buttonsm = divEditElem.getElementsByTagName("button");
-    console.log(buttonsm);
+    // let buttonsm = divEditElem.getElementsByTagName("button");
+    // console.log(buttonsm);
     divEditElem.removeChild(document.getElementById('undoEditTask'));
     divEditElem.removeChild(document.getElementById('saveEditTask'));
     editBtn.style.display = "inline-block";
     doneBtn.style.display = "inline-block";
     deleteBtn.style.display = "inline-block";
+    if(divEditParentElem.classList.contains('tasks')){
+      let tasks = localStorage.getItem("tasks");
+      if (tasks == null) {
+        taskObj = [];
+      } 
+      else {
+        taskObj = JSON.parse(tasks);
+      }
+      let taskIndex = divEditParentIndex - 1;
+      let changedTask = taskObj.splice(taskIndex, 1)[0];
+      console.log(changedTask);
+      changedTask.title = taskTitle.innerText;
+      changedTask.text = taskContent.innerText;
+      let changedTaskIndex = changedTask.index;
+      taskObj.splice(changedTaskIndex, 0, changedTask);
+      localStorage.setItem("tasks", JSON.stringify(taskObj));
+    }
+    else if(divEditParentElem.classList.contains('completedTasks')){
+      let doneTasks = localStorage.getItem("doneTasks");
+      if (doneTasks == null) 
+      {
+        doneTaskObj = [];   
+      }  
+      else {
+        doneTaskObj = JSON.parse(doneTasks);   
+      }
+      let completedTaskIndex = divEditParentIndex - 2;
+      let changedDoneTask = doneTaskObj.splice(completedTaskIndex, 1)[0];
+      console.log(changedDoneTask);
+      changedDoneTask.title = taskTitle.innerText;
+      changedDoneTask.text = taskContent.innerText;
+      let changedDoneTaskIndex = changedDoneTask.index;
+      doneTaskObj.splice(changedDoneTaskIndex, 0, changedDoneTask);
+      localStorage.setItem("doneTasks", JSON.stringify(doneTaskObj));
+    }
     
   }
 
@@ -307,9 +346,9 @@ function showDone() {
   dtkHtml = "";
   doneTaskObj.forEach((element, index)=> {
     dtkHtml += `
-    <div id="${index + 2}" class="taskCard my-2 mx-2 card" style="width: 18rem;">
+    <div id="${index + 2}" class="taskCard completedTasks my-2 mx-2 card" style="width: 18rem;">
     <div class="card-body">
-    <h5 id="doneTitle${index + 4}" class="card-title doneClass">Note ${element.count + 1}: ${element.title}</h5>
+    <h5 id="doneTitle${index + 4}" class="card-title doneClass">Note ${element.count + 1}: <span>${element.title}</span></h5>
     <p id="doneContent${index + 6}" class="card-text doneClass"> ${element.text}</p>
     <button id="doneEdit${index + 8}" onclick="editTask(this.id)" class="btn btn-primary">Edit</button>
     <button id="undo${index + 10}" onclick="undoTask(this.id)"  class="btn btn-success">Undo</button>
