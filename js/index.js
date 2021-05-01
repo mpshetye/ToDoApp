@@ -439,3 +439,11 @@ search.addEventListener("input", function(){
         }
     })
 })
+
+
+//REFRESH - CLEAR ALL TASKS
+document.getElementById('refreshTasks').addEventListener('click',(event)=>{
+  // event.preventDefault();
+  // console.log(`Hey Im refersh`);
+  localStorage.clear();
+});
