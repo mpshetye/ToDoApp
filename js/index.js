@@ -81,7 +81,7 @@ function showTasks() {
   taskObj.forEach((element, index)=> {
     if (element.impStatus == false) {
       tskHtml += `
-      <div id="${index + 1}" class="taskCard tasks my-2 mx-2 card" style="width: 18rem;">
+      <div id="${index + 1}" class="taskCard tasks my-2 mx-2 card" style="width: 18rem; background-color: #fae075;">
       <div class="card-body">
       <h5 id="title${index + 3}" class="card-title">Note ${element.count + 1}: <span>${element.title}</span></h5>
       <p id="content${index+ 5}" class="card-text"> ${element.text}</p>
@@ -346,7 +346,7 @@ function showDone() {
   dtkHtml = "";
   doneTaskObj.forEach((element, index)=> {
     dtkHtml += `
-    <div id="${index + 2}" class="taskCard completedTasks my-2 mx-2 card" style="width: 18rem;">
+    <div id="${index + 2}" class="taskCard completedTasks my-2 mx-2 card" style="width: 18rem; background-color: #dddddd;">
     <div class="card-body">
     <h5 id="doneTitle${index + 4}" class="card-title doneClass">Note ${element.count + 1}: <span>${element.title}</span></h5>
     <p id="doneContent${index + 6}" class="card-text doneClass"> ${element.text}</p>
